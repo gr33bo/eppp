@@ -1,0 +1,92 @@
+Ext.define('Admin.view.articles.ArticleImagePanel', {
+  extend: 'Ext.panel.Panel',
+  alias : 'widget.articleimagepanel',
+
+  autoScroll: true,
+  padding: '10',
+  tpl: [
+    '<div class="details">',
+      '<tpl for=".">',
+        '<tpl if="article_type_css_class!=\'blog\'">',
+          '<div class="featured-item-wrap single {article_type_css_class}">',
+        '<tpl else>',
+          '<div class="featured-item-wrap single blog blog-1">',
+        '</tpl>',
+          '<tpl if="article_type_css_class!=\'blog\'">',
+            '<tpl if="path && single_panel_file_name">',
+              '<img src="{path}/{single_panel_file_name}">',
+            '<tpl else>',
+              '<img src="http://placehold.it/318x159">',
+            '</tpl>',
+          
+            '<div class="{asset_type_css_class}">',
+              '<h1>{asset_type_name}</h1>',
+              '<h2>',
+              '<tpl if="tag">',
+              '+',
+              '</tpl>',
+              '&nbsp;{tag}</h2>',
+              '<p>{title}</p>',
+            '</div>',
+          '<tpl else>',
+           '<div class="blog-inner">',                
+             '<h1>Blog</h1>',
+             '<h2>{created_at}</h2>',
+             '<p>{title}</p>',
+             '<h2 class="author">{synopsis}</h2>',
+           '</div>',
+           '</tpl>',
+        '</div>',
+        '<div style="clear: both"></div>',
+        '<tpl if="article_type_css_class!=\'blog\'">',
+          '<div class="featured-item-wrap double {article_type_css_class}">',
+            '<tpl if="path && double_panel_file_name">',
+              '<img src="{path}/{double_panel_file_name}">',
+            '<tpl else>',
+              '<img src="http://placehold.it/424x318">',
+            '</tpl>',
+          
+            '<div class="{asset_type_css_class}">',
+              '<h1>{asset_type_name}</h1>',
+              '<h2>',
+              '<tpl if="tag">',
+              '+',
+              '</tpl>',
+              '&nbsp;{tag}</h2>',
+              '<p>{title}</p>',
+            '</div>',
+        
+          '</div>',
+          '<div style="clear: both"></div>',
+          '<div class="featured-item-wrap quad {article_type_css_class}">',
+              '<tpl if="path && quad_panel_file_name">',
+                '<img src="{path}/{quad_panel_file_name}">',
+              '<tpl else>',
+                '<img src="http://placehold.it/657x432">',
+              '</tpl>',
+
+              '<div class="{asset_type_css_class}">',
+                '<h1>{asset_type_name}</h1>',
+                '<h2>',
+                '<tpl if="tag">',
+                '+',
+                '</tpl>',
+                '&nbsp;{tag}</h2>',
+                '<p>{title}</p>',
+              '</div>',
+          '</div>',
+          '<div style="clear: both"></div>',
+        '</tpl>',
+      '</tpl>',
+    '</div>'
+  ],
+  /**
+     * Loads a given image record into the panel. Animates the newly-updated panel in from the left over 250ms.
+     */
+  load: function(data) {
+    this.tpl.overwrite(this.body, data);
+  },
+  loadRecord: function(image) {
+    this.tpl.overwrite(this.body, image.data);
+  }
+});

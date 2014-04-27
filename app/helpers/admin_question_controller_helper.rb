@@ -1,0 +1,2 @@
+module AdminQuestionControllerHelper
+end

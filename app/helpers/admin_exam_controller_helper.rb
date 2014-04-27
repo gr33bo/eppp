@@ -1,0 +1,2 @@
+module AdminExamControllerHelper
+end
