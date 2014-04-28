@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     elsif params[:previously_got_wrong]
 
     else
-      questions = Question.find(:all, :order => "rand()", :limit => 50)
+      questions = Question.find(:all, :conditions => "problem_reported is not true", :order => "rand()", :limit => 50)
     end
 
     questions.each_with_index{|question, index|
@@ -70,6 +70,16 @@ class ApplicationController < ActionController::Base
 
     
     result = { 'success' => true, 'rows' => rows }
+    render(:json => result)
+  end
+
+  def report_question
+    question = Question.find(params[:id])
+
+    question.problem_reported=true
+    question.save
+
+    result = { 'success' => true }
     render(:json => result)
   end
 end

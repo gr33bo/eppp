@@ -32,7 +32,7 @@ Ext.define('TestApp.view.QuestionPanel', {
           flex: 1
         },
         {
-          xtype: 'panel',
+          xtype: 'formpanel',
           itemId: 'answer-container',
           items: [],
 //          scrollable: true,
@@ -48,7 +48,7 @@ Ext.define('TestApp.view.QuestionPanel', {
           items: [
             {
               xtype: 'button',
-              text: 'Report',
+              text: 'Report Problem',
               ui: 'decline',
               flex: 1,
               margin: 10,
@@ -56,14 +56,22 @@ Ext.define('TestApp.view.QuestionPanel', {
             },
             {
               xtype: 'button',
-              text: 'Skip',
+              text: 'View Answer Explanation',
+              flex: 1,
+              margin: 10,
+              action: 'view-explanation',
+              hidden: true
+            },
+            {
+              xtype: 'button',
+              text: 'Skip Question',
               flex: 1,
               margin: 10,
               action: 'skip-question'
             },
             {
               xtype: 'button',
-              text: 'Submit',
+              text: 'Submit Answer',
               ui: 'confirm',
               flex: 1,
               margin: 10,
@@ -80,6 +88,8 @@ Ext.define('TestApp.view.QuestionPanel', {
       var answerContainer = this.down("#answer-container"); 
       answerContainer.removeAll();
       
+      var correctAnswerId = null;
+      
       var answers = [];
       Ext.each(record.get("answers"), function(answer){
         var answerField = {
@@ -92,10 +102,22 @@ Ext.define('TestApp.view.QuestionPanel', {
             correctAnswer: answer["is_correct_answer"]
             
         };
+        if(answer["is_correct_answer"]){
+          correctAnswerId = answer["id"];
+        }
+        
         answers.push(answerField);
       });
       
+      this.correctAnswerId = correctAnswerId;
+      
       answerContainer.add(answers);
+      
+      
+
+      this.down("button[action=submit-answer]").show();
+      this.down("button[action=skip-question]").setText("Skip Question");
+      this.down("button[action=view-explanation]").hide();
       
 //      answer_explanation: " A. In the DSM-IV-TR’s description of Axis II, Personality Disorders and Mental Retardation are classified on a separate axis as they “might otherwise be overlooked when attention is directed to the usually more florid Axis I disorders” and does not suggest “pathogenesis or range of appropriate treatment is fundamentally different from that for the disorders coded on Axis I.”"
 //answers: Array[4]

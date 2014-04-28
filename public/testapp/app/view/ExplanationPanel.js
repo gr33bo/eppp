@@ -21,7 +21,7 @@ Ext.define('TestApp.view.ExplanationPanel', {
           margin: '20 0 0 0',
           cls: 'modal-copy-align',
           html: '<h1>Answer Explanation</h1>'+
-            '<p></p>'
+            '<p id="answer-explanation"></p>'
 
         },
         {
