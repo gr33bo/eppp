@@ -743,7 +743,15 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.viewport.WindowsPhone": [
     "Ext.viewport.WP"
   ],
-  "TestApp.view.Main": []
+  "TestApp.controller.Main": [],
+  "TestApp.model.Question": [],
+  "TestApp.model.Setting": [],
+  "TestApp.store.QuestionStore": [],
+  "TestApp.store.SettingStore": [],
+  "TestApp.view.AboutPanel": [],
+  "TestApp.view.ExplanationPanel": [],
+  "TestApp.view.Main": [],
+  "TestApp.view.QuestionPanel": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1687,7 +1695,21 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
+  "TestApp.controller.Main": [],
+  "TestApp.model.Question": [],
+  "TestApp.model.Setting": [],
+  "TestApp.store.QuestionStore": [],
+  "TestApp.store.SettingStore": [],
+  "TestApp.view.AboutPanel": [
+    "widget.aboutpanel"
+  ],
+  "TestApp.view.ExplanationPanel": [
+    "widget.explanationpanel"
+  ],
   "TestApp.view.Main": [
     "widget.main"
+  ],
+  "TestApp.view.QuestionPanel": [
+    "widget.questionpanel"
   ]
 });

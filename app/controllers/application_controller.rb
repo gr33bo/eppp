@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   #protect_from_forgery
 
+  def index
+
+    redirect_to "/testapp/build/production/TestApp/"
+  end
+
   def register
     uuid = params[:uuid]
     platform = params[:platform]
