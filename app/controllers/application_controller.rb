@@ -35,10 +35,10 @@ class ApplicationController < ActionController::Base
     elsif params[:previously_got_wrong]
 
     else
-      questions = Question.find(:all, :order => "rand()", :limit => 100)
+      questions = Question.find(:all, :order => "rand()", :limit => 50)
     end
 
-    questions.each{|question|
+    questions.each_with_index{|question, index|
       category = nil
       
       if question.category
@@ -62,7 +62,8 @@ class ApplicationController < ActionController::Base
         :text => question.question_text,
         :answer_explanation => question.answer_explanation,
         :category => category,
-        :answers => answer_rows
+        :answers => answer_rows,
+        :order_by => index
       }
       
     }

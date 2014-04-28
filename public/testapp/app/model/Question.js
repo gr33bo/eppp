@@ -6,7 +6,8 @@ Ext.define('TestApp.model.Question', {
         { name: 'text', type: 'string'},
         { name: 'category', type: 'string'},
         { name: 'answer_explanation', type: 'string'},
-        { name: 'answers', type: 'auto'}
+        { name: 'answers', type: 'auto'},
+        { name: 'order_by', type: 'integer'}
       ]
     }
 });

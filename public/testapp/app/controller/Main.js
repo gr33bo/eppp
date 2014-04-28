@@ -39,7 +39,18 @@ Ext.define('TestApp.controller.Main', {
               questionStore.load();
               
 	    }
-	}
+	}, 
+        'questionpanel button[action=skip-question]': {
+//          tap: 'loadNextRecord'
+          tap: function(){
+            Ext.Msg.confirm("Confirm", "Are you sure you wish "+
+              "to skip this question?", function(btn){
+                if(btn == "yes"){
+                  this.loadNextRecord();
+                }
+              }, this);
+          }
+        }
       }
     },
     init: function(){
@@ -47,11 +58,33 @@ Ext.define('TestApp.controller.Main', {
       questionStore.on("load", this.questionStoreLoad, this);
     },
     questionStoreLoad: function(store, records){
-      this.getMain().setActiveItem(1);
-      
-      this.getMain().setMasked(false);
+      if(records.length > 0){
+        this.getQuestionPanel().loadQuestion(records[0]);
+
+        this.getMain().setActiveItem(1);
+
+        this.getMain().setMasked(false);
+        
+      }
     },
-    test: function(){
-      
+    loadNextRecord: function(){      
+      var questionPanel = this.getQuestionPanel(),
+          currentRecord = questionPanel.record,
+          questionStore = Ext.getStore("QuestionStore");
+
+      var total = questionStore.getCount();
+      var index = questionStore.findExact('id', currentRecord.get("id"));
+
+      if(index == total-1){
+        this.getMain().setMasked({
+                                  message: 'Please Wait..',
+                                  indicator: true
+                                });
+        questionStore.load();
+
+      } else {
+        var nextRecord = questionStore.getAt(index+1);
+        questionPanel.loadQuestion(nextRecord);
+      }
     }
 });
