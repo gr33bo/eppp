@@ -48,7 +48,7 @@ Ext.define('TestApp.view.QuestionPanel', {
           items: [
             {
               xtype: 'button',
-              text: 'Report Problem',
+              text: 'Report<br/>Problem',
               ui: 'decline',
               flex: 1,
               margin: 10,
@@ -57,7 +57,7 @@ Ext.define('TestApp.view.QuestionPanel', {
             },
             {
               xtype: 'button',
-              text: 'View Answer Explanation',
+              text: 'View<br/>Explanation',
               flex: 1,
               margin: 10,
               action: 'view-explanation',
@@ -66,7 +66,7 @@ Ext.define('TestApp.view.QuestionPanel', {
             },
             {
               xtype: 'button',
-              text: 'Skip Question',
+              text: 'Skip<br/>Question',
               flex: 1,
               margin: 10,
               action: 'skip-question',
@@ -74,7 +74,7 @@ Ext.define('TestApp.view.QuestionPanel', {
             },
             {
               xtype: 'button',
-              text: 'Submit Answer',
+              text: 'Submit<br/>Answer',
               ui: 'confirm',
               flex: 1,
               margin: 10,
