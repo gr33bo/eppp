@@ -26,7 +26,7 @@ Ext.define('TestApp.view.AboutPanel', {
             'such, there may be garbled, incomplete or missing data. If '+
             'you encounter any such thing, click the "Report" button '+
             'to let me know (this will also skip the question).</p>'+
-            '<p><b>Practise questions</b> will randomly select 100 questions. There are options that '+
+            '<p><b>Practise questions</b> will randomly select 20 questions at a time. There are options that '+
             'will let you toggle whether or not you wish to see questions that you '+
             'have seen before as well as only seeing questions you got incorrect before.</p>'+
             '<p><b>Timed Tests</b> (coming soon) will administer a complete exam\'s worth of questions '+

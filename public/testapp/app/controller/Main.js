@@ -38,7 +38,7 @@ Ext.define('TestApp.controller.Main', {
         'main button[action=practise]' : {
 	    tap: function(button) {
               var questionStore = Ext.getStore("QuestionStore");
-              this.getMain().setMasked({
+              Ext.Viewport.setMasked({
                                         message: 'Please Wait..',
                                         indicator: true
                                       });
@@ -151,7 +151,7 @@ Ext.define('TestApp.controller.Main', {
         
         this.getMain().setActiveItem(1);
 
-        this.getMain().setMasked(false);
+        Ext.Viewport.setMasked(false);
         
       }
     },
@@ -164,7 +164,7 @@ Ext.define('TestApp.controller.Main', {
       var index = questionStore.findExact('id', currentRecord.get("id"));
 
       if(index == total-1){
-        this.getMain().setMasked({
+        Ext.Viewport.setMasked({
                                   message: 'Please Wait..',
                                   indicator: true
                                 });
