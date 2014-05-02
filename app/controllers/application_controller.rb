@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     elsif params[:previously_got_wrong]
 
     else
-      questions = Question.find(:all, :conditions => "problem_reported is not true", :order => "rand()", :limit => 50)
+      questions = Question.find(:all, :conditions => "problem_reported is not true", :order => "rand()", :limit => 20)
     end
 
     questions.each_with_index{|question, index|
