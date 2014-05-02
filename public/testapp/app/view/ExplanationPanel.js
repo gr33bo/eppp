@@ -4,8 +4,8 @@ Ext.define('TestApp.view.ExplanationPanel', {
     config: {
       modal: true,
       centered: true,
-      width: "40%",
-      height: "60%",
+      width: "90%",
+      height: "90%",
       styleHtmlContent: true,
       style: 'opacity: 0.95;',
       itemId: 'about-app',
