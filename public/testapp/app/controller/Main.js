@@ -67,23 +67,38 @@ Ext.define('TestApp.controller.Main', {
             var questionPanel = this.getQuestionPanel(),
                 currentRecord = questionPanel.record;
 
-            Ext.Msg.confirm("Confirm", "Are you sure you wish "+
-              "to report a problem this question?", function(btn){
-                if(btn == "yes"){
-                  Ext.Ajax.request({
-                      url: domain+'/report_question',
-                      params: {
-                          id: currentRecord.get("id")
-                      },
-                      success: function(response){
-                        Ext.Msg.alert("Thank you for your report");
-                        this.loadNextQuestion();
-                      },
-                      scope: this
-                  });
 
+            Ext.Msg.prompt(
+                'Report Question',
+                'Please let me know why you are reporting this question',
+                function (buttonId, value) {
+                  if(buttonId == "ok"){
+                    if(!value){
+                      Ext.Msg.alert("Error","Cannot report a question without a reason");
+                    } else {
+                      Ext.Ajax.request({
+                          url: domain+'/report_question',
+                          params: {
+                              question_id: currentRecord.get("id"),
+                              reason: value
+                          },
+                          success: function(response){
+                            Ext.Msg.alert("Thank you for your report");
+                            this.loadNextQuestion();
+                          },
+                          scope: this
+                      });
+                    }
+                  }
+                },
+                this,
+                true,
+                null,
+                {
+                    autoCapitalize: true,
+                    placeHolder: 'Enter reason here'
                 }
-              }, this);
+            );
           }
         }, 
         'questionpanel button[action=submit-answer]': {
@@ -100,6 +115,18 @@ Ext.define('TestApp.controller.Main', {
                 } else {
                   Ext.Msg.alert("Incorrect!", "Sorry, that was not correct");
                 }
+                console.log(answers["answer"])
+                Ext.each(currentRecord.data.answers, function(ans, i){
+                  var item = answerList.items.items[i];
+                  if(item && ans){
+                    if(ans.is_correct_answer){
+                      item.setLabelCls("green-label");
+                    } else if(ans.id == answers["answer"]) {
+                      item.setLabelCls("red-label");
+                    }
+                  }
+                });
+                
                 questionPanel.down("button[action=submit-answer]").hide();
                 questionPanel.down("button[action=skip-question]").setText("Next Question");
                 questionPanel.down("button[action=view-explanation]").show();
@@ -112,7 +139,8 @@ Ext.define('TestApp.controller.Main', {
               Ext.Ajax.request({
                   url: domain+'/report_question',
                   params: {
-                      id: currentRecord.get("id")
+                      question_id: currentRecord.get("id"),
+                      reason: "Does not know correct answer"
                   },
                   success: function(response){
 //                    Ext.Msg.alert("Thank you for your report");

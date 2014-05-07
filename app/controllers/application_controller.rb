@@ -79,9 +79,12 @@ class ApplicationController < ActionController::Base
   end
 
   def report_question
-    question = Question.find(params[:id])
+    question = Question.find(params[:question_id])
 
     question.problem_reported=true
+    
+    report = Report.create!({:question_id => params[:question_id], :reason => params[:reason]})
+
     question.save
 
     result = { 'success' => true }

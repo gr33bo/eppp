@@ -4,6 +4,7 @@ class Question < ActiveRecord::Base
   belongs_to :category
 
   has_many :answers
+  has_many :reports
 
 
   attr_accessible :question_number, :question_text, :category_id, :answer_explanation
