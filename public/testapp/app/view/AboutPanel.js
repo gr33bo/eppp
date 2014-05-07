@@ -21,6 +21,19 @@ Ext.define('TestApp.view.AboutPanel', {
           margin: '20 0 0 0',
           cls: 'modal-copy-align',
           html: '<h1>About This App</h1>'+
+            '<p><b>Important Info:</b> Because this is not a native '+
+            'app (such as you would get from the app store), your '+
+            'browser may cache the app to its memory. If you hear that '+
+            'an update was made to the app, but you see no changes, '+
+            'please clear your cache then refresh this page, you should '+
+            'then see updates. I\'ll try and build an update notification '+
+            'system into the app asap!<br/>'+
+            'Also while I\'m trying to make sure all data is correct, there\'s '+
+            'always the chance that something slips through the net, so '+
+            'I should probably say I\'m not responsible for any incorrect '+
+            'information found in here and its effet on your exam outcomes!<br/>'+
+            'Assume that this is a 300 page document '+
+            'with lots of protective legal jargon etc</p>'+
             '<p>The questions & answers for this application were '+
             'taken from pdfs and word documents, many from scans. As '+
             'such, there may be garbled, incomplete or missing data. If '+

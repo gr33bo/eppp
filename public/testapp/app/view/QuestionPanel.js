@@ -28,7 +28,7 @@ Ext.define('TestApp.view.QuestionPanel', {
           xtype: 'panel',
           html: 'blah',
           itemId: 'question-container',
-//          scrollable: true,
+          scrollable: true,
           flex: 1
         },
         {
