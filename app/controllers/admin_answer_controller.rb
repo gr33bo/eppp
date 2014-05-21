@@ -10,7 +10,8 @@ class AdminAnswerController < ApplicationController
           :id => answer.id,
           :answer_text => answer.answer_text,
           :is_correct_answer => answer.is_correct_answer,
-          :answer_identifier => answer.answer_identifier
+          :answer_identifier => answer.answer_identifier,
+          :question_id => answer.question_id
         }
     }
 
