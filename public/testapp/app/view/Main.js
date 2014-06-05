@@ -30,9 +30,28 @@ Ext.define('TestApp.view.Main', {
                     title: 'EPPP Practise App'
                   },
                   {
+                    html: "Welcome person",
+                    itemId: "welcome-message",
+                    hidden: true
+                  },
+                  {
                     xtype: 'button',
                     text: 'About',
                     action: 'about',
+                    margin: '0 0 20 0',
+                    width: '75%'
+                  },
+                  {
+                    xtype: 'button',
+                    text: 'Last Updated: ',
+                    action: 'last-updated',
+                    margin: '0 0 20 0',
+                    width: '75%'
+                  },
+                  {
+                    xtype: 'button',
+                    text: 'Register/Sign in',
+                    action: 'register',
                     margin: '0 0 20 0',
                     width: '75%'
                   },

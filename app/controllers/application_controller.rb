@@ -5,29 +5,62 @@ class ApplicationController < ActionController::Base
 
     redirect_to "/testapp/build/production/TestApp/"
   end
-
+  #def self.authenticate(user, password)
+  #  if user.password == Digest::SHA2.hexdigest(user.password_salt + password)
+  #    return user
+  #  end
+  #  return nil
+  #end
   def register
-    uuid = params[:uuid]
-    platform = params[:platform]
+    begin
+      username = params[:username]
+      password=  params[:password]
 
-    if uuid == "anonymous"
-      done = false
-      while !done
-        uuid = (0...40).map{(i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr}.join
-        existing = Device.find(:first, :conditions => ["uuid = ?", uuid])
-        done = true if !existing
+      existing = Account.find(:first, :conditions => ["username = ?", username])
+
+      raise "Username already taken" if existing
+      
+      account = Account.new
+      account.username = username.strip.downcase
+      account.new_password = password.strip
+      account.hash_new_password
+      account.save
+
+      
+      result = { 'success' => true, 'account_id' => account.id, 'username' => account.username }
+  
+      render(:json => result)
+    rescue
+
+      result = { 'success' => false, 'message' => $!.message }
+  
+      render(:json => result)
+    end
+  end
+
+  def sign_in
+    begin
+      username = params[:username]
+      password=  params[:password]
+
+      account = Account.find(:first, :conditions => ["username = ?", username])
+
+      raise "Account not found" if !account
+      
+      if account.password != Digest::SHA2.hexdigest(account.password_salt + password)
+        raise "Password is incorrect"
       end
+
+      
+      result = { 'success' => true, 'account_id' => account.id, 'username' => account.username }
+  
+      render(:json => result)
+    rescue
+
+      result = { 'success' => false, 'message' => $!.message }
+  
+      render(:json => result)
     end
-
-    device = Device.find(:first, :conditions => ["uuid = ?", uuid])
-    if !device
-      device = Device.create!(:uuid => uuid, :platform => platform)
-    end
-
-    session[:device_id] = device.id
-
-    result = { 'success' => true, 'uuid' => uuid }
-    render(:json => result)
   end
 
   def questions

@@ -8,6 +8,7 @@ Ext.define('TestApp.controller.Main', {
         aboutPanel: 'aboutpanel',
         explanationPanel: 'explanationpanel',
         questionPanel: 'questionpanel',
+        accountPanel: 'accountpanel',
         answerList: '#answer-container'
       },
       control: {
@@ -28,6 +29,139 @@ Ext.define('TestApp.controller.Main', {
         'aboutpanel button[action=close]': {
 	    tap: function(button) {
               this.getAboutPanel().hide();
+            }
+        },
+        'main button[action=register]' : {
+	    tap: function(button) {
+              var accountPanel = this.getAccountPanel();
+              if(!accountPanel){
+                accountPanel = Ext.Viewport.add(Ext.create('TestApp.view.AccountPanel', {id: 'account-panel'}));
+              }
+              accountPanel.show();
+	    }
+	},
+        'accountpanel button[action=go-to-register]': {
+	    tap: function(button) {
+              var accountPanel = this.getAccountPanel();
+                  accountPanel.down("#sign-in-explanation").hide();
+                  accountPanel.down("#register-explanation").show();
+                  accountPanel.down("#go-to-register").hide();
+                  accountPanel.down("#go-to-sign-in").show();
+                  accountPanel.down("button[action=go-to-register]").hide();
+                  accountPanel.down("button[action=go-to-sign-in]").show();
+                  accountPanel.down("button[action=sign-in]").hide();
+                  accountPanel.down("button[action=register]").show();
+                  
+                  accountPanel.down("#password-confirmation").show();
+                  
+                  accountPanel.down("titlebar").setTitle("Register");
+                  
+            }
+        },
+        'accountpanel button[action=go-to-sign-in]': {
+	    tap: function(button) {
+              var accountPanel = this.getAccountPanel();
+                  accountPanel.down("#sign-in-explanation").show();
+                  accountPanel.down("#register-explanation").hide();
+                  accountPanel.down("#go-to-register").show();
+                  accountPanel.down("#go-to-sign-in").hide();
+                  accountPanel.down("button[action=go-to-register]").show();
+                  accountPanel.down("button[action=go-to-sign-in]").hide();
+                  accountPanel.down("button[action=sign-in]").show();
+                  accountPanel.down("button[action=register]").hide();
+                  
+                  accountPanel.down("#password-confirmation").hide();
+                  
+                  accountPanel.down("titlebar").setTitle("Sign In");
+                  
+            }
+        },
+        'accountpanel button[action=close]': {
+	    tap: function(button) {
+              this.getAccountPanel().hide();
+            }
+        },
+        'accountpanel button[action=register]': {
+	    tap: function(button) {
+              var accountPanel = this.getAccountPanel(),
+                  userField = accountPanel.down("textfield"),
+                  passField = accountPanel.down("#password"),
+                  confField = accountPanel.down("#password-confirmation");
+          
+              
+              if(userField.getValue().trim().length == 0){
+                Ext.Msg.alert("Error", "Username must be at least 1 character long");
+              } else if(passField.getValue().trim().length < 6){
+                Ext.Msg.alert("Error", "Password must be at least 6 characters long");
+              } else if(passField.getValue().trim() != confField.getValue().trim()){
+                Ext.Msg.alert("Error", "Password and confirmation do not match");
+              } else {
+                Ext.Ajax.request({
+                  url: domain+'/register',
+                  method: "POST",
+                  params: {
+                    username: userField.getValue().trim(),
+                    password: passField.getValue().trim()
+                  },
+                  success: function(response){
+                    var decoded = Ext.decode(response.responseText);
+                    
+                    if(decoded.success){
+                      userId = decoded.account_id;
+                      userName = decoded.username;
+                      var mainView=  this.getMain(),
+                          welcomeContainer = mainView.down("#welcome-message");
+
+                      welcomeContainer.setHtml("<b>Welcome "+userName+"</b>");
+                      welcomeContainer.show();
+                      this.getAccountPanel().hide();
+                    } else {
+                      Ext.Msg.alert("Error", decoded.message);
+                    }
+                  },
+                  scope: this
+                });
+              }
+            }
+        },
+        'accountpanel button[action=sign-in]': {
+	    tap: function(button) {
+              var accountPanel = this.getAccountPanel(),
+                  userField = accountPanel.down("textfield"),
+                  passField = accountPanel.down("#password");
+          
+              
+              if(userField.getValue().trim().length == 0){
+                Ext.Msg.alert("Error", "Please enter a username");
+              } else if(passField.getValue().trim().lengt == 0){
+                Ext.Msg.alert("Error", "Please enter a password");
+              } else {
+                Ext.Ajax.request({
+                  url: domain+'/sign_in',
+                  method: "POST",
+                  params: {
+                    username: userField.getValue().trim(),
+                    password: passField.getValue().trim()
+                  },
+                  success: function(response){
+                    var decoded = Ext.decode(response.responseText);
+                    
+                    if(decoded.success){
+                      userId = decoded.account_id;
+                      userName = decoded.username;
+                      var mainView=  this.getMain(),
+                          welcomeContainer = mainView.down("#welcome-message");
+
+                      welcomeContainer.setHtml("<b>Welcome "+userName+"</b>");
+                      welcomeContainer.show();
+                      this.getAccountPanel().hide();
+                    } else {
+                      Ext.Msg.alert("Error", decoded.message);
+                    }
+                  },
+                  scope: this
+                });
+              }
             }
         },
         'explanationpanel button[action=close]': {

@@ -2,6 +2,7 @@ Ext.define('Admin.model.Question', {
     extend: 'Ext.data.Model',
     fields: [
         { name:'id', type:'integer', useNull: true},
+        { name:'exam_id', type:'integer'},
         { name:'question_number', type:'integer'},
         { name:'question_text', type: 'string'},
         { name:'category_id', type: 'integer'},

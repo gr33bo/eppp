@@ -37,7 +37,8 @@ Ext.application({
         'Main',
         'AboutPanel',
         'ExplanationPanel',
-        'QuestionPanel'
+        'QuestionPanel',
+        'AccountPanel'
     ],
 
     icon: {
@@ -65,38 +66,47 @@ Ext.application({
         // Initialize the main view
         Ext.Viewport.add(Ext.create('TestApp.view.Main'));
         
-        var settingStore = Ext.getStore("SettingStore");
-        var uuidRecord = settingStore.findRecord("name", "uuid");
-        var uuid = "";
-        if(uuidRecord){
-          uuid = uuidRecord.get("value");
-        } else {
-          uuid = Ext.device.Device.uuid;
+//        var settingStore = Ext.getStore("SettingStore");
+//        var uuidRecord = settingStore.findRecord("name", "uuid");
+//        var uuid = "";
+//        if(uuidRecord){
+//          uuid = uuidRecord.get("value");
+//        } else {
+//          uuid = Ext.device.Device.uuid;
+//        }
+//        
+//        Ext.Ajax.request({
+//          url: domain+'/register',
+//          method: "POST",
+//          params: {
+//            uuid: uuid,
+//            platform: Ext.device.Device.platform,
+//            action: 'register'
+//          },
+//          success: function(response){
+//            var decoded = Ext.decode(response.responseText);
+//            if(decoded.uuid){
+//              if(!uuidRecord){
+//                var record = Ext.create('TestApp.model.Setting', {
+//                    name: 'uuid',
+//                    value: decoded.uuid
+//                });
+//                settingStore.add(record);
+//                settingStore.sync();
+//              }
+//            }
+//            console.log(response);
+//          }
+//      });
+
+        if(userName){
+          var mainController = this.getController('Main'),
+              mainView=  mainController.getMain(),
+              welcomeContainer = mainView.down("#welcome-message");
+      
+          welcomeContainer.setHtml("<b>Welcome "+userName+"</b>");
+          welcomeContainer.show();
         }
-        
-        Ext.Ajax.request({
-          url: domain+'/register',
-          method: "POST",
-          params: {
-            uuid: uuid,
-            platform: Ext.device.Device.platform,
-            action: 'register'
-          },
-          success: function(response){
-            var decoded = Ext.decode(response.responseText);
-            if(decoded.uuid){
-              if(!uuidRecord){
-                var record = Ext.create('TestApp.model.Setting', {
-                    name: 'uuid',
-                    value: decoded.uuid
-                });
-                settingStore.add(record);
-                settingStore.sync();
-              }
-            }
-            console.log(response);
-          }
-      });
     },
 
     onUpdated: function() {

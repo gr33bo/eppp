@@ -17,6 +17,7 @@ Eppp::Application.routes.draw do
     resources :admin_answer
 
     match 'register' => 'application#register'
+    match 'sign_in' => 'application#sign_in'
     match 'exams' => 'application#exams'
     match 'questions' => 'application#questions'
 

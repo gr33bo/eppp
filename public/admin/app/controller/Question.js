@@ -170,8 +170,9 @@ Ext.define('Admin.controller.Question', {
         this.getAnswerGrid().disable();
         form.reset(); // this is not properly clearing checkboxgroups
 
+        var examId = this.getExamFilter().getValue();
 
-        var newRecord = new Admin.model.Question();
+        var newRecord = new Admin.model.Question({exam_id:examId});
 
 
         formPanel.loadRecord(newRecord);

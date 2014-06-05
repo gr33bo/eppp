@@ -10,6 +10,7 @@ class AdminQuestionController < ApplicationController
     @questions.each{|question|
       rows << {
           :id => question.id,
+          :exam_id => question.exam_id,
           :question_number => question.question_number,
           :question_text => question.question_text,
           :category_id => question.category_id,

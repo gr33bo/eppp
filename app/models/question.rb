@@ -7,5 +7,5 @@ class Question < ActiveRecord::Base
   has_many :reports
 
 
-  attr_accessible :question_number, :question_text, :category_id, :answer_explanation
+  attr_accessible :question_number, :question_text, :category_id, :answer_explanation, :exam_id
 end
