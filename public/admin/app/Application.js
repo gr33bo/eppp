@@ -6,18 +6,22 @@ Ext.define('Admin.Application', {
     views: [
       'QuestionGrid',
       'AnswerGrid',
-      'QuestionForm'
+      'QuestionForm',
+      'UpdateGrid',
+      'UpdateForm'
     ],
 
     controllers: [
-      'Question'
+      'Question',
+      'Update'
     ],
 
     models: [
       'Question',
       'Answer',
       'Category',
-      'Exam'
+      'Exam',
+      'Update'
     ],
 
     stores: [
@@ -25,6 +29,7 @@ Ext.define('Admin.Application', {
       'ExamStore',
       'AnswerStore',
       'CategoryStore',
-      'QuestionStore'
+      'QuestionStore',
+      'UpdateStore'
     ]
 });

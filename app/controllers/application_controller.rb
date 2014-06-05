@@ -68,8 +68,22 @@ class ApplicationController < ActionController::Base
     rows = []
     if params[:exam_id]
 
-    elsif params[:ignore_seen]
+    elsif params[:ignore_seen] && params[:ignore_seen] == "true"
+      questions = Question.find(:all, 
+        :conditions => ["id not in (select question_id from accounts_questions_answers where account_id = ?) and problem_reported is not true", params[:account_id]], 
+        :order => "rand()", :limit => 20)
 
+      if questions.size < 20
+        question_ids = []
+        questions.each{|q|
+          question_ids << q.id
+        }
+        extra_questions = Question.find(:all, 
+            :conditions => ["id not in (?) and problem_reported is not true", question_ids], 
+            :order => "rand()", :limit => 20-questions.size)
+
+        questions.concat(extra_questions)
+      end
     elsif params[:previously_got_wrong]
 
     else
@@ -121,6 +135,26 @@ class ApplicationController < ActionController::Base
     question.save
 
     result = { 'success' => true }
+    render(:json => result)
+  end
+
+  def save_answer
+    AccountQuestionAnswer.create!(:question_id => params[:question_id], :answer_id => params[:answer_id], :account_id => params[:account_id])
+
+
+
+    result = { 'success' => true }
+    render(:json => result)
+  end
+
+  def updates
+    updates = Update.find(:all, :order => "created_at desc")
+    rows = []
+
+    updates.each{|update|
+      rows << {:id => update.id, :text => update.update_explanation.gsub(/\n/m, '<br/>'), :created_at => update.created_at.strftime("%m/%d/%Y") }
+    } 
+    result = { 'success' => true, 'rows' => rows }
     render(:json => result)
   end
 end

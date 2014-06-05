@@ -15,11 +15,14 @@ Eppp::Application.routes.draw do
     resources :admin_category
     resources :admin_question
     resources :admin_answer
+    resources :admin_update
 
     match 'register' => 'application#register'
     match 'sign_in' => 'application#sign_in'
+    match 'save_answer' => 'application#save_answer'
     match 'exams' => 'application#exams'
     match 'questions' => 'application#questions'
+    match 'updates' => 'application#updates'
 
     match 'start_exam' => 'application#start_exam'
     match 'pause_exam' => 'application#pause_exam'

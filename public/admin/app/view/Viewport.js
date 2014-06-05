@@ -12,35 +12,60 @@ Ext.define('Admin.view.Viewport', {
     items: [
       {
         region: 'center',
-        xtype: 'panel',
-        layout: 'border',
+        xtype: 'tabpanel',
         items: [
           {
-//            html: 'aaaaaaaaaaa',
-            xtype: 'questiongrid',
-            region: 'center',
-            flex: 0.5
-          },
-          { 
+            title: 'Questions',
             xtype: 'panel',
-            region: 'east',
-            flex: 1,
             layout: 'border',
             items: [
               {
-                xtype: 'questionform',
+    //            html: 'aaaaaaaaaaa',
+                xtype: 'questiongrid',
                 region: 'center',
-                flex: 1
+                flex: 0.5
               },
-              {
-                xtype: 'answergrid',
-                flex: 0.5,
-                region: 'south'
+              { 
+                xtype: 'panel',
+                region: 'east',
+                flex: 1,
+                layout: 'border',
+                items: [
+                  {
+                    xtype: 'questionform',
+                    region: 'center',
+                    flex: 1
+                  },
+                  {
+                    xtype: 'answergrid',
+                    flex: 0.5,
+                    region: 'south'
+                  }
+
+                ]
               }
-           
+            ]
+          },
+          {
+            title: 'Updates',
+            xtype: 'panel',
+            layout: 'border',
+            items: [
+              {
+    //            html: 'aaaaaaaaaaa',
+                xtype: 'updategrid',
+                region: 'center',
+                flex: 0.5
+              },
+              { 
+                xtype: 'updateform',
+                region: 'east',
+                flex: 1
+              }
             ]
           }
         ]
+        
       },
       Ext.create('Ext.ux.StatusBar', {
           id: 'main-status',

@@ -1,15 +1,17 @@
 Ext.define('TestApp.controller.Main', {
     extend: 'Ext.app.Controller',
     config: {
-      stores: ['QuestionStore'],
-      models: ['Question'],
+      stores: ['QuestionStore', 'UpdateStore'],
+      models: ['Question', 'Update'],
       refs: {
         main: 'main',
         aboutPanel: 'aboutpanel',
         explanationPanel: 'explanationpanel',
         questionPanel: 'questionpanel',
         accountPanel: 'accountpanel',
-        answerList: '#answer-container'
+        answerList: '#answer-container',
+        updatePanel: 'updatepanel',
+        updateButton: 'main button[action=updates]'
       },
       control: {
         'button[action=home]' : {
@@ -17,6 +19,22 @@ Ext.define('TestApp.controller.Main', {
             this.getMain().setActiveItem(0);
           }
         },
+//        'main button[action=previous-answers]' : {
+//	    tap: function(button) {
+//              if(!userId){
+//                Ext.Msg.alert("Please sign in to see previous answers");
+//              } else {                
+//                var previousQuestionStore = Ext.getStore("PreviousQuestionStore");
+//                
+//                
+//                Ext.Viewport.setMasked({
+//                              message: 'Please Wait..',
+//                              indicator: true
+//                            });
+//                previousQuestionStore.load();
+//              }
+//	    }
+//	},
         'main button[action=about]' : {
 	    tap: function(button) {
               var aboutPanel = this.getAboutPanel();
@@ -29,6 +47,20 @@ Ext.define('TestApp.controller.Main', {
         'aboutpanel button[action=close]': {
 	    tap: function(button) {
               this.getAboutPanel().hide();
+            }
+        },
+        'main button[action=updates]' : {
+	    tap: function(button) {
+              var updatePanel = this.getUpdatePanel();
+              if(!updatePanel){
+                updatePanel = Ext.Viewport.add(Ext.create('TestApp.view.UpdatePanel', {id: 'update-panel'}));
+              }
+              updatePanel.show();
+	    }
+	},
+        'updatepanel button[action=close]': {
+	    tap: function(button) {
+              this.getUpdatePanel().hide();
             }
         },
         'main button[action=register]' : {
@@ -172,18 +204,39 @@ Ext.define('TestApp.controller.Main', {
         'main button[action=practise]' : {
 	    tap: function(button) {
               var questionStore = Ext.getStore("QuestionStore");
-              Ext.Viewport.setMasked({
-                                        message: 'Please Wait..',
-                                        indicator: true
-                                      });
-              questionStore.load();
+              if(userId){
+                
+                Ext.Msg.confirm("View Previous?", "Do you wish to see questions you have answered previously?", 
+                  function(btn){
+                    var proxy = questionStore.getProxy(),
+                        extraParams = proxy.getExtraParams();
+                      proxy.setExtraParam("account_id", userId);    
+                    if(btn == "no"){    
+                      proxy.setExtraParam("ignore_seen", true);                  
+                    } else {
+                      proxy.setExtraParam("ignore_seen", false);    
+                    }
+                      
+                    
+                    Ext.Viewport.setMasked({
+                                  message: 'Please Wait..',
+                                  indicator: true
+                                });
+                    questionStore.load();
+                  }, this);
+              } else {
+                Ext.Viewport.setMasked({
+                              message: 'Please Wait..',
+                              indicator: true
+                            });
+                questionStore.load();
+              }
               
 	    }
 	}, 
         'questionpanel button[action=skip-question]': {
           tap: function(button){
 //            conso
-            console.log(this);
             if(button.getText() == "Skip Question"){
               Ext.Msg.confirm("Confirm", "Are you sure you wish "+
                 "to skip this question?", function(btn){
@@ -249,6 +302,19 @@ Ext.define('TestApp.controller.Main', {
                 } else {
                   Ext.Msg.alert("Incorrect!", "Sorry, that was not correct");
                 }
+                
+                if(userId){
+                  Ext.Ajax.request({
+                    url: domain+'/save_answer',
+                    method: "POST",
+                    params: {
+                      account_id: userId,
+                      answer_id: answers["answer"],
+                      question_id: currentRecord.get("id")
+                    }
+                  });
+                }
+                
                 console.log(answers["answer"])
                 Ext.each(currentRecord.data.answers, function(ans, i){
                   var item = answerList.items.items[i];
@@ -305,7 +371,9 @@ Ext.define('TestApp.controller.Main', {
     },
     init: function(){
       var questionStore = Ext.getStore("QuestionStore");
+      var updateStore = Ext.getStore("UpdateStore");
       questionStore.on("load", this.questionStoreLoad, this);
+      updateStore.on("load", this.updateStoreLoad, this);
     },
     questionStoreLoad: function(store, records){
       if(records.length > 0){
@@ -315,6 +383,27 @@ Ext.define('TestApp.controller.Main', {
 
         Ext.Viewport.setMasked(false);
         
+      }
+    },
+    updateStoreLoad: function(store, records){
+      if(records.length > 0){
+        this.getUpdateButton().setText("Last Updated: "+records[0].data.created_at);        
+        
+        var updatePanel = Ext.Viewport.add(Ext.create('TestApp.view.UpdatePanel', {id: 'update-panel', hidden: true}));
+        var container = updatePanel.down("#updates-container");
+        
+        var html = "";
+        Ext.each(records, function(record, i){
+          var recordHtml = "<p><b>"+record.get("created_at")+"</b><br/>"+record.get("text")+"</p>";
+          
+          if(i < (records.length-1)){
+            recordHtml = recordHtml + "<hr/>";
+          }
+          
+          html = html + recordHtml;
+        });
+        
+        container.setHtml(html);
       }
     },
     loadNextQuestion: function(){      

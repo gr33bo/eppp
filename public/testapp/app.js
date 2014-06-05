@@ -38,7 +38,8 @@ Ext.application({
         'AboutPanel',
         'ExplanationPanel',
         'QuestionPanel',
-        'AccountPanel'
+        'AccountPanel',
+        'UpdatePanel'
     ],
 
     icon: {

@@ -44,7 +44,7 @@ Ext.define('TestApp.view.Main', {
                   {
                     xtype: 'button',
                     text: 'Last Updated: ',
-                    action: 'last-updated',
+                    action: 'updates',
                     margin: '0 0 20 0',
                     width: '75%'
                   },
@@ -60,6 +60,12 @@ Ext.define('TestApp.view.Main', {
                     text: 'Practise Questions',
                     action: 'practise',
                     width: '75%'
+//                  },
+//                  {
+//                    xtype: 'button',
+//                    text: 'Previously Answered Questions',
+//                    action: 'previous-answers',
+//                    width: '75%'
 //                  },
 //                  {
 //                    xtype: 'button',
